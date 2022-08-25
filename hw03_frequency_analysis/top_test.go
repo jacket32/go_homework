@@ -7,7 +7,7 @@ import (
 )
 
 // Change to true if needed.
-var taskWithAsteriskIsCompleted = false
+var taskWithAsteriskIsCompleted = true
 
 var text = `Как видите, он  спускается  по  лестнице  вслед  за  своим
 	другом   Кристофером   Робином,   головой   вниз,  пересчитывая
@@ -43,9 +43,57 @@ var text = `Как видите, он  спускается  по  лестни�
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
 
+var engText = `
+	I met a traveller from an antique land
+	Who said: Two vast and trunkless legs of stone
+	Stand in the desert. Near them on the sand,
+	Half sunk, a shattered visage lies, whose frown
+	And wrinkled lip and sneer of cold command
+	Tell that its sculptor well those passions read
+	Which yet survive, stamped on these lifeless things,
+	The hand that mocked them and the heart that fed.
+	And on the pedestal these words appear:
+	"My name is Ozymandias, King of Kings:
+	Look on my works, ye mighty, and despair!"
+	Nothing beside remains. Round the decay
+	Of that colossal wreck, boundless and bare,
+	The lone and level sands stretch far away.
+`
+
+var smallText = `Nine timbers went to the woods. Chop, chop!`
+
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
 		require.Len(t, Top10(""), 0)
+	})
+
+	t.Run("english text", func(t *testing.T) {
+		expected := []string{
+			"and",   // 8
+			"the",   // 7
+			"of",    // 4
+			"on",    // 4
+			"that",  // 4
+			"a",     // 2
+			"my",    // 2
+			"them",  // 2
+			"these", // 2
+			"an",    // 1
+		}
+		require.Equal(t, expected, Top10(engText))
+	})
+
+	t.Run("small text", func(t *testing.T) {
+		expected := []string{
+			"chop",    // 2
+			"nine",    // 1
+			"the",     // 1
+			"timbers", // 1
+			"to",      // 1
+			"went",    // 1
+			"woods",   // 1
+		}
+		require.Equal(t, expected, Top10(smallText))
 	})
 
 	t.Run("positive test", func(t *testing.T) {
